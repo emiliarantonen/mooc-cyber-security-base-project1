@@ -3,6 +3,9 @@ from django.db import connection
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+# FLAW 3 fix: importing Djangos build in validators for 'registration' function
+# from django.core.exceptions import ValidationError
+# from django.contrib.auth.password_validation import validate_password
 from .models import Note
 from django import forms
 
@@ -54,3 +57,15 @@ def edit(request, note_id):
         form = NoteForm(instance=note)
 
     return render(request, 'edit.html', {'form': form})
+
+# FLAW 3 - Broken Authentication
+# FIX: When creating users in Django shell, use this 'registration' function to avoid common or weak passwords
+# def registration(username, password):
+#     try:
+#         validate_password(password)
+#         user = User.objects.create_user(username=username, password=password)
+#         return user
+#     except ValidationError as e:
+#         print("Password validation error:", e.messages)
+#         return None
+
