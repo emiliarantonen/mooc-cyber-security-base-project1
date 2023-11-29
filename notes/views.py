@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 # FLAW 3 fix: importing Djangos build in validators for 'registration' function
 # from django.core.exceptions import ValidationError
 # from django.contrib.auth.password_validation import validate_password
+from django.views.decorators.csrf import csrf_exempt
 from .models import Note
 from django import forms
 
@@ -17,6 +18,9 @@ class NoteForm(forms.ModelForm):
         fields = ['title', 'content']
 
 @login_required
+# FLAW 4 - Inadequate CSRF protection
+# FIX: remove 'csrf_exempt' to enable CSRF protection
+@csrf_exempt
 def home(request):
     # FLAW 1 - SQL injection
     username = request.user.username
@@ -39,6 +43,10 @@ def home(request):
     print(notes)
     return render(request, 'homePage.html', {'notes': notes, 'form': form})
 
+@login_required
+# FLAW 4 - Inadequate CSRF protection
+# FIX: remove 'csrf_exempt' to enable CSRF protection
+@csrf_exempt
 def edit(request, note_id):
     # FLAW 2 - Broken access control
     note = Note.objects.get(pk=note_id)
