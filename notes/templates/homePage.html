@@ -20,8 +20,11 @@
     <h2>Your Notes:</h2>
     <ul>
         {% for note in notes %}
+            <!-- FLAW 5 - Cross Site Scripting -->
+            <!-- FIX: add "| escape"  -->
+            <!-- <li>{{ note.1 | escape }} - {{ note.2 | escape }}</li> -->
             <li>{{ note.1 }} - {{ note.2 }}</li>
-            <a href="{% url 'edit' note.0 %}">Edit</a>
+            <a href="{% url 'edit' note.0 %}">Edit</a>  
         {% empty %}
             <li>No notes yet.</li>
         {% endfor %}

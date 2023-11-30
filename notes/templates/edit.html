@@ -11,5 +11,8 @@
         {{ form.as_p }}
         <input type="submit" value="Save Changes">
     </form>
+    <!-- FLAW 5: Cross-site Scripting -->
+    <!-- FIX: using escape ensures that there is on embedded code in 'note.content'-->
+    <!-- <p>{{ note.content | escape }}</p> -->
 </body>
 </html>

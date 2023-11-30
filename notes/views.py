@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 # FLAW 3 fix: importing Djangos build in validators for 'registration' function
 # from django.core.exceptions import ValidationError
 # from django.contrib.auth.password_validation import validate_password
+# from django.utils.html import escape
 from django.views.decorators.csrf import csrf_exempt
 from .models import Note
 from django import forms
@@ -64,7 +65,11 @@ def edit(request, note_id):
     else:
         form = NoteForm(instance=note)
 
-    return render(request, 'edit.html', {'form': form})
+    context = {
+        'note': note,
+        'form': form    
+    }
+    return render(request, 'edit.html', context)
 
 # FLAW 3 - Broken Authentication
 # FIX: When creating users in Django shell, use this 'registration' function to avoid common or weak passwords
