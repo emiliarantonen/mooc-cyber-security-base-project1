@@ -7,6 +7,9 @@
     <h1>Welcome to the Notes App!</h1>
 
     <form action="{% url 'home' %}" method="POST">
+        <!-- FLAW 4 - Inadequate CSRF protection -->
+        <!-- FIX: add 'csrf_token' to enable CSRF protection -->
+        <!-- It already has to be added -->
         {% csrf_token %}
         <label for="title">Title:</label><br>
         <input type="text" id="title" name="title"><br>
@@ -20,7 +23,7 @@
     <h2>Your Notes:</h2>
     <ul>
         {% for note in notes %}
-            <!-- FLAW 5 - Cross Site Scripting -->
+            <!-- FLAW 5 - Cross-site Scripting -->
             <!-- FIX: add "| escape"  -->
             <!-- <li>{{ note.1 | escape }} - {{ note.2 | escape }}</li> -->
             <li>{{ note.1 }} - {{ note.2 }}</li>
