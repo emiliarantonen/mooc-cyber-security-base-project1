@@ -4,9 +4,12 @@ LINK: https://github.com/emiliarantonen/mooc-cyber-security-base-project1
 Registered users:
 
 Username: alice
+
 Password: redqueen
 
+
 Username: bob
+
 Password: squarepants
 
 FLAW 1: SQL Injection
@@ -38,16 +41,20 @@ To fix this flaw, there has been created a function called ‘registration’. T
 
 FLAW 4: CSRF (Cross-Site Request Forgery)
 FLAW:  https://github.com/emiliarantonen/mooc-cyber-security-base-project1/blob/main/notes/templates/homePage.html#L10
+
 https://github.com/emiliarantonen/mooc-cyber-security-base-project1/blob/main/notes/views.py#L25
 
 https://github.com/emiliarantonen/mooc-cyber-security-base-project1/blob/main/notes/templates/edit.html#L10
+
 https://github.com/emiliarantonen/mooc-cyber-security-base-project1/blob/main/notes/views.py#L50
 
 
 FIX: https://github.com/emiliarantonen/mooc-cyber-security-base-project1/blob/main/notes/templates/homePage.html#L11
+
 https://github.com/emiliarantonen/mooc-cyber-security-base-project1/blob/main/notes/views.py#L27
 
 https://github.com/emiliarantonen/mooc-cyber-security-base-project1/blob/main/notes/templates/edit.html#L11
+
 https://github.com/emiliarantonen/mooc-cyber-security-base-project1/blob/main/notes/views.py#L53
 
 
@@ -58,10 +65,12 @@ To fix this flaw the ‘csrf_exempt’ tag has to be changed to ‘csrf_protect�
 
 FLAW 5: Cross-Site Scripting
 FLAW: https://github.com/emiliarantonen/mooc-cyber-security-base-project1/blob/main/notes/templates/homePage.html#L25
+
  https://github.com/emiliarantonen/mooc-cyber-security-base-project1/blob/main/notes/templates/edit.html#L16
 
 
 FIX: https://github.com/emiliarantonen/mooc-cyber-security-base-project1/blob/main/notes/templates/homePage.html#L26
+
  https://github.com/emiliarantonen/mooc-cyber-security-base-project1/blob/main/notes/templates/edit.html#L17
 
 
