@@ -9,14 +9,13 @@
     <form method="post">
         <!-- FLAW 4 - Inadequate CSRF protection -->
         <!-- FIX: add 'csrf_token' to enable CSRF protection -->
-        <!-- It already has to be added -->
-        {% csrf_token %}
+        <!-- {% csrf_token %} -->
         {{ form.as_p }}
         <input type="submit" value="Save Changes">
     </form>
     <!-- FLAW 5: Cross-site Scripting -->
-    <!-- FIX: using escape ensures that there is on embedded code in 'note.content'-->
+    <!-- FIX: removing 'safe' using 'escape' ensures that there is on embedded code in 'note.content'-->
     <!-- <p>{{ note.content | escape }}</p> -->
-    <p>{{ note.content }}</p>
+    <p>{{ note.content | safe }}</p>
 </body>
 </html>

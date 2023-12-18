@@ -37,26 +37,37 @@ Broken Authentication means weaknesses in user identification, authentication, a
 To fix this flaw, there has been created a function called ‘registration’. This can be used in Django shell while creating new users. The function ensures that new passwords adhere to stronger validation criteria. To implement this there is used Django’s built in functions to validate password for example certain length and including letters and numbers. Using this function, when creating new users, helps to avoid common or weak passwords. 
 
 FLAW 4: CSRF (Cross-Site Request Forgery)
-FLAW: https://github.com/emiliarantonen/mooc-cyber-security-base-project1/blob/main/notes/templates/homePage.html#L10
+FLAW:  https://github.com/emiliarantonen/mooc-cyber-security-base-project1/blob/main/notes/templates/homePage.html#L10
+https://github.com/emiliarantonen/mooc-cyber-security-base-project1/blob/main/notes/views.py#L25
+
 https://github.com/emiliarantonen/mooc-cyber-security-base-project1/blob/main/notes/templates/edit.html#L10
+https://github.com/emiliarantonen/mooc-cyber-security-base-project1/blob/main/notes/views.py#L50
+
 
 FIX: https://github.com/emiliarantonen/mooc-cyber-security-base-project1/blob/main/notes/templates/homePage.html#L11
+https://github.com/emiliarantonen/mooc-cyber-security-base-project1/blob/main/notes/views.py#L27
+
 https://github.com/emiliarantonen/mooc-cyber-security-base-project1/blob/main/notes/templates/edit.html#L11
+https://github.com/emiliarantonen/mooc-cyber-security-base-project1/blob/main/notes/views.py#L53
 
-Cross-site Request Forgery (CSRF) is an attack that allows a different site to send fake requests to web application you are logged in. When you visit another site, your browser may unknowingly send you authentication token to the web app you are currently using. This lets the attackers access the data as they were you. In my application I don’t have ‘csrf_token’ tag in my homepage and editing views. That means these views don’t check if the incoming POST requests has a valid CSRF token. Due to that my application is vulnerable to POST requests being made from other sites.[4]
 
-To fix this flaw the ‘csrf_token’ tag need to be added in my homepage and edit views html files. This makes sure, due to Django’s built in models, that homepage and editing views check that incoming POST requests has a valid CSRF token. I have already uncommented these in my code because the application won’t run otherwise. 
+Cross-site Request Forgery (CSRF) is an attack that allows a different site to send fake requests to web application you are logged in. When you visit another site, your browser may unknowingly send you authentication token to the web app you are currently using. This lets the attackers access the data as they were you. In my application I don’t have ‘csrf_token’ tag in my homepage and editing views. That means these views don’t check if the incoming POST requests has a valid CSRF token. I also have ‘csrf_exempt’ tag in my home, edit and delete functions, which removes CSRF protection from the view. Due to that my application is vulnerable to POST requests being made from other sites.[4]
+
+To fix this flaw the ‘csrf_exempt’ tag has to be changed to ‘csrf_protect’ tag. Additionally ‘csrf_token’ tag need to be added in my homepage and edit views html files. This makes sure, due to Django’s built in models, that homepage and editing views check that incoming POST requests has a valid CSRF token. 
+
 
 FLAW 5: Cross-Site Scripting
-FLAW: https://github.com/emiliarantonen/mooc-cyber-security-base-project1/blob/main/notes/templates/homePage.html#L26
+FLAW: https://github.com/emiliarantonen/mooc-cyber-security-base-project1/blob/main/notes/templates/homePage.html#L25
+ https://github.com/emiliarantonen/mooc-cyber-security-base-project1/blob/main/notes/templates/edit.html#L16
+
+
+FIX: https://github.com/emiliarantonen/mooc-cyber-security-base-project1/blob/main/notes/templates/homePage.html#L26
  https://github.com/emiliarantonen/mooc-cyber-security-base-project1/blob/main/notes/templates/edit.html#L17
 
-FIX: https://github.com/emiliarantonen/mooc-cyber-security-base-project1/blob/main/notes/templates/homePage.html#L27
- https://github.com/emiliarantonen/mooc-cyber-security-base-project1/blob/main/notes/templates/edit.html#L18
 
-Cross-Site Scripting (XSS) is a vulnerability that allows users to inject malicious scripts into website which executes on other users’ machines. The malicious content can be stored permanently in the web application for example in databases. User-generated content has a higher risk of being malicious. Therefore it is essential to focus more on preventing that. These attacks can enable session hijacking, allowing attackers to impersonate users. In my application XSS occurs when user-provided content while editing notes is not sanitized. It allows an attacker to inject and execute malicious scripts. [1][4]
+Cross-Site Scripting (XSS) is a vulnerability that allows users to inject malicious scripts into website which executes on other users’ machines. The malicious content can be stored permanently in the web application for example in databases. User-generated content has a higher risk of being malicious. Therefore it is essential to focus more on preventing that. These attacks can enable session hijacking, allowing attackers to impersonate users. In my application XSS occurs when user-provided content while editing notes is not sanitized. I have used ‘safe’ filter while inserting content. When using that, Djangos built in automated escape is turned off. That means the content is setted ’safe’ and it will not be escaped. It allows an attacker to inject and execute malicious scripts. [1][4]
 
-To fix this flaw I have added Django templates ‘escape’ filter to user-generated contents of notes. This is used in both adding and editing notes. This will escape special characters preventing any code or malicious content being executed in the browser. 
+To fix this flaw I have removed ‘safe’ filters and added Django templates ‘escape’ filter instead. This is used in user-generated contents of notes. This is used in both adding and editing notes. This will escape special characters preventing any code or malicious content being executed in the browser. 
 
 Sources:
 1.	 OWASP Top 10, A03:2021 Injection (2021) https://owasp.org/Top10/A03_2021-Injection/

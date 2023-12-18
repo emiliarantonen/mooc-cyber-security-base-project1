@@ -9,6 +9,8 @@ from django.contrib.auth.decorators import login_required
 # FLAW 5 fix: importing Djangos escape for preventing XSS attakcs
 # from django.utils.html import escape
 from django.views.decorators.csrf import csrf_exempt
+# FLAW 4 fix: import 'csrf_protect' to enable protection
+# from django.views.decorators.csrf import csrf_protect
 from .models import Note
 from django import forms
 
@@ -20,7 +22,10 @@ class NoteForm(forms.ModelForm):
         fields = ['title', 'content']
 
 @login_required
-
+# FLAW 4 - Inadequate CSRF protection
+@csrf_exempt
+# FIX: change 'csrf_exempt' to 'csrf_protect' to enable CSRF protection
+# @csrf_protect
 def home(request):
     # FLAW 1 - SQL injection
     username = request.user.username
@@ -42,6 +47,10 @@ def home(request):
     return render(request, 'homePage.html', {'notes': notes, 'form': form})
 
 @login_required
+# FLAW 4 - Inadequate CSRF protection
+@csrf_exempt
+# FIX: change 'csrf_exempt' to 'csrf_protect' to enable CSRF protection
+# @csrf_protect
 def edit(request, note_id):
     # FLAW 2 - Broken access control
     note = Note.objects.get(pk=note_id)
@@ -51,9 +60,9 @@ def edit(request, note_id):
     if request.method == 'POST':
         form = NoteForm(request.POST, instance=note)
         if form.is_valid():
-            new_note = form.save(commit=False)
-            new_note.user = request.user
-            new_note.save()
+            edited_note = form.save(commit=False)
+            edited_note.user = request.user
+            edited_note.save()
             return redirect('/')
     else:
         form = NoteForm(instance=note)
@@ -63,6 +72,20 @@ def edit(request, note_id):
         'form': form    
     }
     return render(request, 'edit.html', context)
+
+@login_required
+# FLAW 4 - Inadequate CSRF protection
+@csrf_exempt
+# FIX: change 'csrf_exempt' to 'csrf_protect' to enable CSRF protection
+# @csrf_protect
+def delete(request, note_id):
+    note =Note.objects.get(pk=note_id)
+    note.delete()
+    return redirect('/')
+
+                
+            
+
 
 # FLAW 3 - Broken Authentication
 # FIX: When creating users in Django shell, use this 'registration' function to avoid common or weak passwords
