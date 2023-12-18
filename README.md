@@ -1,11 +1,11 @@
 # mooc-cyber-security-base-project1
 LINK: https://github.com/emiliarantonen/mooc-cyber-security-base-project1
 
-Logged in user:
+Registered users:
+
 Username: alice
 Password: redqueen
 
-Another user:
 Username: bob
 Password: squarepants
 
